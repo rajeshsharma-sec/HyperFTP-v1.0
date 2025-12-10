@@ -63,48 +63,45 @@ class HyperFTP:
         self.style.theme_use('clam')
         
         # ============================================================
-        # 60-30-10 COLOR RULE IMPLEMENTATION
+        # PREMIUM DARK THEME - Dracula Inspired
         # ============================================================
-        # 60% - DOMINANT (Dark backgrounds - creates visual foundation)
-        # 30% - SECONDARY (Cards, panels, inputs - supporting elements)
-        # 10% - ACCENT (CTAs, highlights, selections - draws attention)
+        # 60% - DOMINANT (Rich dark purple-gray backgrounds)
+        # 30% - SECONDARY (Slightly lighter surfaces)
+        # 10% - ACCENT (Vibrant purple/pink/cyan highlights)
         # ============================================================
         
         self.colors = {
-            # ========== 60% DOMINANT - Dark Base ==========
-            # Main background colors that cover most of the UI
-            'dominant': '#0d1117',           # Primary background (GitHub dark)
-            'dominant_alt': '#161b22',       # Slightly lighter variant
+            # ========== 60% DOMINANT - Rich Dark Base ==========
+            'dominant': '#1e1e2e',            # Catppuccin Mocha base
+            'dominant_alt': '#181825',        # Darker variant (mantle)
             
-            # ========== 30% SECONDARY - Supporting ==========
-            # Cards, panels, inputs, secondary elements
-            'secondary': '#21262d',          # Card backgrounds
-            'secondary_light': '#30363d',    # Lighter cards/hover states
-            'secondary_border': '#30363d',   # Borders between sections
+            # ========== 30% SECONDARY - Elevated Surfaces ==========
+            'secondary': '#313244',           # Surface0 - cards
+            'secondary_light': '#45475a',     # Surface1 - hover
+            'secondary_border': '#585b70',    # Overlay0 - borders
             
-            # ========== 10% ACCENT - Highlights ==========
-            # Primary actions, selections, important elements
-            'accent': '#58a6ff',             # Primary accent (sky blue)
-            'accent_hover': '#79b8ff',       # Accent hover state
-            'accent_muted': '#388bfd',       # Muted accent
+            # ========== 10% ACCENT - Vibrant Highlights ==========
+            'accent': '#cba6f7',              # Mauve (purple) - primary
+            'accent_hover': '#f5c2e7',        # Pink - hover
+            'accent_muted': '#b4befe',        # Lavender - muted
             
-            # ========== Semantic Colors (within 10%) ==========
-            'success': '#3fb950',            # Success/positive actions
-            'success_hover': '#56d364',
-            'danger': '#f85149',             # Danger/destructive actions
-            'danger_hover': '#ff7b72',
-            'warning': '#d29922',            # Warnings
+            # ========== Semantic Colors ==========
+            'success': '#a6e3a1',             # Green
+            'success_hover': '#94e2d5',       # Teal
+            'danger': '#f38ba8',              # Red/Pink
+            'danger_hover': '#eba0ac',        # Flamingo
+            'warning': '#fab387',             # Peach/Orange
             
-            # ========== Text Hierarchy ==========
-            'text_primary': '#f0f6fc',       # Main text
-            'text_secondary': '#8b949e',     # Secondary/muted text
-            'text_muted': '#6e7681',         # Disabled/hint text
-            'text_on_accent': '#ffffff',     # Text on accent backgrounds
+            # ========== Text Colors ==========
+            'text_primary': '#cdd6f4',        # Text
+            'text_secondary': '#a6adc8',      # Subtext1
+            'text_muted': '#6c7086',          # Overlay1
+            'text_on_accent': '#1e1e2e',      # Base on accent
             
             # ========== Borders ==========
-            'border': '#30363d',
-            'border_light': '#3d444d',
-            'border_muted': '#21262d',
+            'border': '#45475a',              # Surface1
+            'border_light': '#585b70',        # Overlay0
+            'border_muted': '#313244',        # Surface0
         }
         
         # Configure root window (60% DOMINANT)
@@ -334,12 +331,12 @@ class HyperFTP:
                            background=self.colors['dominant_alt'])
 
     def create_menu(self):
-        """Create application menu bar with 60-30-10 dark theme"""
-        # Menu styling using 60-30-10 colors
-        menu_bg = '#21262d'          # 30% SECONDARY
-        menu_fg = '#f0f6fc'          # Text primary
-        menu_active_bg = '#58a6ff'   # 10% ACCENT
-        menu_active_fg = '#0d1117'   # DOMINANT
+        """Create application menu bar with premium dark theme"""
+        # Catppuccin Mocha menu colors
+        menu_bg = '#313244'          # Surface0
+        menu_fg = '#cdd6f4'          # Text
+        menu_active_bg = '#cba6f7'   # Mauve accent
+        menu_active_fg = '#1e1e2e'   # Base
         
         menubar = tk.Menu(self.root, 
                          bg=menu_bg, 
@@ -605,24 +602,24 @@ class HyperFTP:
         log_frame = ttk.LabelFrame(self.root, text="📋 Transfer Log", padding="5")
         log_frame.pack(fill=tk.X, padx=5, pady=5)
         
-        self.log_text = scrolledtext.ScrolledText(log_frame, height=6, 
+        self.log_text = scrolledtext.ScrolledText(log_frame, height=10, 
                                                   font=('Consolas', 10),
-                                                  bg='#21262d',           # 30% SECONDARY
-                                                  fg='#8b949e',           # Text secondary
-                                                  insertbackground='#58a6ff',  # 10% ACCENT
-                                                  selectbackground='#58a6ff',  # 10% ACCENT
-                                                  selectforeground='#0d1117',  # DOMINANT
+                                                  bg='#313244',           # Surface0
+                                                  fg='#a6adc8',           # Subtext1
+                                                  insertbackground='#cba6f7',  # Mauve
+                                                  selectbackground='#cba6f7',  # Mauve
+                                                  selectforeground='#1e1e2e',  # Base
                                                   relief='flat',
                                                   padx=10,
                                                   pady=8,
                                                   state=tk.DISABLED)
         self.log_text.pack(fill=tk.X)
         
-        # Configure log tags using 10% ACCENT colors
-        self.log_text.tag_configure('info', foreground='#58a6ff')     # Accent blue
-        self.log_text.tag_configure('success', foreground='#3fb950')  # Success green
-        self.log_text.tag_configure('error', foreground='#f85149')    # Danger red
-        self.log_text.tag_configure('warning', foreground='#d29922')  # Warning orange
+        # Configure log tags with Catppuccin colors
+        self.log_text.tag_configure('info', foreground='#89b4fa')     # Blue
+        self.log_text.tag_configure('success', foreground='#a6e3a1')  # Green
+        self.log_text.tag_configure('error', foreground='#f38ba8')    # Red
+        self.log_text.tag_configure('warning', foreground='#fab387')  # Peach
 
     def create_status_bar(self):
         """Create status bar"""
@@ -1156,10 +1153,10 @@ class HyperFTP:
     # ==================== CONTEXT MENUS ====================
     
     def local_context_menu(self, event):
-        """Show local file context menu with 60-30-10 theme"""
+        """Show local file context menu with Catppuccin theme"""
         menu = tk.Menu(self.root, tearoff=0,
-                      bg='#21262d', fg='#f0f6fc',           # 30% SECONDARY
-                      activebackground='#58a6ff', activeforeground='#0d1117')  # 10% ACCENT
+                      bg='#313244', fg='#cdd6f4',           # Surface0, Text
+                      activebackground='#cba6f7', activeforeground='#1e1e2e')  # Mauve, Base
         menu.add_command(label="  ⬆️ Upload", command=self.upload_file)
         menu.add_command(label="  📁 New Folder", command=self.create_local_folder)
         menu.add_command(label="  🗑️ Delete", command=self.delete_local_file)
@@ -1168,13 +1165,13 @@ class HyperFTP:
         menu.tk_popup(event.x_root, event.y_root)
 
     def remote_context_menu(self, event):
-        """Show remote file context menu with 60-30-10 theme"""
+        """Show remote file context menu with Catppuccin theme"""
         if not self.connected:
             return
         
         menu = tk.Menu(self.root, tearoff=0,
-                      bg='#21262d', fg='#f0f6fc',           # 30% SECONDARY
-                      activebackground='#58a6ff', activeforeground='#0d1117')  # 10% ACCENT
+                      bg='#313244', fg='#cdd6f4',           # Surface0, Text
+                      activebackground='#cba6f7', activeforeground='#1e1e2e')  # Mauve, Base
         menu.add_command(label="  ⬇️ Download", command=self.download_file)
         menu.add_command(label="  📁 New Folder", command=self.create_remote_folder)
         menu.add_command(label="  ✏️ Rename", command=self.rename_remote_file)
