@@ -58,274 +58,288 @@ class HyperFTP:
         self.refresh_local_files()
 
     def setup_styles(self):
-        """Configure modern dark theme styles"""
+        """Configure modern dark theme styles using 60-30-10 color rule"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Modern Dark Color Palette
+        # ============================================================
+        # 60-30-10 COLOR RULE IMPLEMENTATION
+        # ============================================================
+        # 60% - DOMINANT (Dark backgrounds - creates visual foundation)
+        # 30% - SECONDARY (Cards, panels, inputs - supporting elements)
+        # 10% - ACCENT (CTAs, highlights, selections - draws attention)
+        # ============================================================
+        
         self.colors = {
-            # Base colors
-            'bg_dark': '#1a1a2e',
-            'bg_medium': '#16213e',
-            'bg_light': '#0f3460',
-            'bg_card': '#1f2940',
+            # ========== 60% DOMINANT - Dark Base ==========
+            # Main background colors that cover most of the UI
+            'dominant': '#0d1117',           # Primary background (GitHub dark)
+            'dominant_alt': '#161b22',       # Slightly lighter variant
             
-            # Accent colors
-            'primary': '#00d9ff',
-            'primary_hover': '#00b8d4',
-            'secondary': '#7c4dff',
-            'success': '#00e676',
-            'success_hover': '#00c853',
-            'danger': '#ff5252',
-            'danger_hover': '#ff1744',
-            'warning': '#ffab00',
+            # ========== 30% SECONDARY - Supporting ==========
+            # Cards, panels, inputs, secondary elements
+            'secondary': '#21262d',          # Card backgrounds
+            'secondary_light': '#30363d',    # Lighter cards/hover states
+            'secondary_border': '#30363d',   # Borders between sections
             
-            # Text colors
-            'text_primary': '#ffffff',
-            'text_secondary': '#b0bec5',
-            'text_muted': '#78909c',
+            # ========== 10% ACCENT - Highlights ==========
+            # Primary actions, selections, important elements
+            'accent': '#58a6ff',             # Primary accent (sky blue)
+            'accent_hover': '#79b8ff',       # Accent hover state
+            'accent_muted': '#388bfd',       # Muted accent
             
-            # Border colors
-            'border': '#2d3a4f',
-            'border_light': '#3d4a5f',
+            # ========== Semantic Colors (within 10%) ==========
+            'success': '#3fb950',            # Success/positive actions
+            'success_hover': '#56d364',
+            'danger': '#f85149',             # Danger/destructive actions
+            'danger_hover': '#ff7b72',
+            'warning': '#d29922',            # Warnings
             
-            # Special
-            'highlight': '#e94560',
-            'gradient_start': '#00d9ff',
-            'gradient_end': '#7c4dff'
+            # ========== Text Hierarchy ==========
+            'text_primary': '#f0f6fc',       # Main text
+            'text_secondary': '#8b949e',     # Secondary/muted text
+            'text_muted': '#6e7681',         # Disabled/hint text
+            'text_on_accent': '#ffffff',     # Text on accent backgrounds
+            
+            # ========== Borders ==========
+            'border': '#30363d',
+            'border_light': '#3d444d',
+            'border_muted': '#21262d',
         }
         
-        # Configure root window
-        self.root.configure(bg=self.colors['bg_dark'])
+        # Configure root window (60% DOMINANT)
+        self.root.configure(bg=self.colors['dominant'])
         
-        # ==================== FRAME STYLES ====================
+        # ==================== FRAME STYLES (60% DOMINANT) ====================
         self.style.configure('TFrame',
-                           background=self.colors['bg_dark'])
+                           background=self.colors['dominant'])
         
         self.style.configure('Card.TFrame',
-                           background=self.colors['bg_card'],
+                           background=self.colors['secondary'],
                            relief='flat')
         
         # ==================== LABEL STYLES ====================
         self.style.configure('TLabel',
-                           background=self.colors['bg_dark'],
+                           background=self.colors['dominant'],
                            foreground=self.colors['text_primary'],
                            font=('Segoe UI', 10))
         
         self.style.configure('Header.TLabel',
-                           background=self.colors['bg_dark'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['dominant'],
+                           foreground=self.colors['accent'],
                            font=('Segoe UI', 12, 'bold'))
         
         self.style.configure('Muted.TLabel',
-                           background=self.colors['bg_dark'],
+                           background=self.colors['dominant'],
                            foreground=self.colors['text_muted'],
                            font=('Segoe UI', 9))
         
-        # ==================== BUTTON STYLES ====================
-        # Primary Button (Cyan)
+        # ==================== BUTTON STYLES (10% ACCENT for Primary) ====================
+        # Primary Button - Uses ACCENT color (10%)
         self.style.configure('Primary.TButton',
-                           background=self.colors['primary'],
-                           foreground=self.colors['bg_dark'],
+                           background=self.colors['accent'],
+                           foreground=self.colors['dominant'],
                            font=('Segoe UI', 10, 'bold'),
                            padding=(15, 8),
                            borderwidth=0)
         self.style.map('Primary.TButton',
-                      background=[('active', self.colors['primary_hover']),
-                                ('pressed', self.colors['primary_hover'])])
+                      background=[('active', self.colors['accent_hover']),
+                                ('pressed', self.colors['accent_muted'])])
         
-        # Success Button (Green)
+        # Success Button - Semantic accent (within 10%)
         self.style.configure('Success.TButton',
                            background=self.colors['success'],
-                           foreground=self.colors['bg_dark'],
+                           foreground=self.colors['dominant'],
                            font=('Segoe UI', 10, 'bold'),
                            padding=(15, 8),
                            borderwidth=0)
         self.style.map('Success.TButton',
                       background=[('active', self.colors['success_hover']),
-                                ('pressed', self.colors['success_hover']),
-                                ('disabled', '#2d4a3d')])
+                                ('pressed', self.colors['success']),
+                                ('disabled', self.colors['secondary_light'])])
         
-        # Danger Button (Red)
+        # Danger Button - Semantic accent (within 10%)
         self.style.configure('Danger.TButton',
                            background=self.colors['danger'],
-                           foreground=self.colors['text_primary'],
+                           foreground=self.colors['text_on_accent'],
                            font=('Segoe UI', 10, 'bold'),
                            padding=(15, 8),
                            borderwidth=0)
         self.style.map('Danger.TButton',
                       background=[('active', self.colors['danger_hover']),
-                                ('pressed', self.colors['danger_hover']),
-                                ('disabled', '#4a2d2d')])
+                                ('pressed', self.colors['danger']),
+                                ('disabled', self.colors['secondary_light'])])
         
-        # Secondary Button (Purple)
+        # Secondary Button (30% SECONDARY) - Uses secondary colors
         self.style.configure('Secondary.TButton',
-                           background=self.colors['secondary'],
+                           background=self.colors['secondary_light'],
                            foreground=self.colors['text_primary'],
                            font=('Segoe UI', 10),
                            padding=(12, 6),
-                           borderwidth=0)
+                           borderwidth=1)
         self.style.map('Secondary.TButton',
-                      background=[('active', '#9c6dff'),
-                                ('pressed', '#6a3dcc')])
+                      background=[('active', self.colors['accent']),
+                                ('pressed', self.colors['accent_muted'])])
         
-        # Toolbar Button (Outline style)
+        # Toolbar Button (30% SECONDARY)
         self.style.configure('Toolbar.TButton',
-                           background=self.colors['bg_card'],
+                           background=self.colors['secondary'],
                            foreground=self.colors['text_primary'],
                            font=('Segoe UI', 9),
-                           padding=(10, 5),
+                           padding=(10, 6),
                            borderwidth=1)
         self.style.map('Toolbar.TButton',
-                      background=[('active', self.colors['bg_light']),
-                                ('pressed', self.colors['primary'])])
+                      background=[('active', self.colors['secondary_light']),
+                                ('pressed', self.colors['accent'])])
         
-        # Icon Button (Small)
+        # Icon Button (30% SECONDARY)
         self.style.configure('Icon.TButton',
-                           background=self.colors['bg_card'],
+                           background=self.colors['secondary'],
                            foreground=self.colors['text_primary'],
                            font=('Segoe UI', 11),
                            padding=(8, 4),
                            borderwidth=0)
         self.style.map('Icon.TButton',
-                      background=[('active', self.colors['bg_light'])])
+                      background=[('active', self.colors['secondary_light'])])
         
-        # ==================== ENTRY STYLES ====================
+        # ==================== ENTRY STYLES (30% SECONDARY) ====================
         self.style.configure('TEntry',
-                           fieldbackground=self.colors['bg_card'],
+                           fieldbackground=self.colors['secondary'],
                            foreground=self.colors['text_primary'],
-                           insertcolor=self.colors['primary'],
-                           borderwidth=2,
+                           insertcolor=self.colors['accent'],
+                           borderwidth=1,
                            relief='flat',
                            padding=(8, 6))
         self.style.map('TEntry',
-                      fieldbackground=[('focus', self.colors['bg_light'])],
-                      bordercolor=[('focus', self.colors['primary'])])
+                      fieldbackground=[('focus', self.colors['secondary_light'])],
+                      bordercolor=[('focus', self.colors['accent'])])
         
-        # ==================== COMBOBOX STYLES ====================
+        # ==================== COMBOBOX STYLES (30% SECONDARY) ====================
         self.style.configure('TCombobox',
-                           fieldbackground=self.colors['bg_card'],
-                           background=self.colors['bg_card'],
+                           fieldbackground=self.colors['secondary'],
+                           background=self.colors['secondary'],
                            foreground=self.colors['text_primary'],
-                           arrowcolor=self.colors['primary'],
-                           borderwidth=2,
+                           arrowcolor=self.colors['accent'],
+                           borderwidth=1,
                            padding=(8, 6))
         self.style.map('TCombobox',
-                      fieldbackground=[('focus', self.colors['bg_light'])],
-                      background=[('active', self.colors['bg_light'])])
+                      fieldbackground=[('focus', self.colors['secondary_light'])],
+                      background=[('active', self.colors['secondary_light'])])
         
-        # ==================== CHECKBOX STYLES ====================
+        # ==================== CHECKBOX STYLES (60% DOMINANT bg) ====================
         self.style.configure('TCheckbutton',
-                           background=self.colors['bg_dark'],
+                           background=self.colors['dominant'],
                            foreground=self.colors['text_primary'],
                            font=('Segoe UI', 10))
         self.style.map('TCheckbutton',
-                      background=[('active', self.colors['bg_dark'])])
+                      background=[('active', self.colors['dominant'])])
         
         # ==================== LABELFRAME STYLES ====================
+        # Main LabelFrame (60% DOMINANT)
         self.style.configure('TLabelframe',
-                           background=self.colors['bg_dark'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['dominant'],
+                           foreground=self.colors['accent'],
                            bordercolor=self.colors['border'],
                            relief='solid',
                            borderwidth=1)
         self.style.configure('TLabelframe.Label',
-                           background=self.colors['bg_dark'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['dominant'],
+                           foreground=self.colors['accent'],
                            font=('Segoe UI', 11, 'bold'))
         
-        # Card LabelFrame
+        # Card LabelFrame (30% SECONDARY)
         self.style.configure('Card.TLabelframe',
-                           background=self.colors['bg_card'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['secondary'],
+                           foreground=self.colors['accent'],
                            bordercolor=self.colors['border_light'],
                            relief='solid',
                            borderwidth=1)
         self.style.configure('Card.TLabelframe.Label',
-                           background=self.colors['bg_card'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['secondary'],
+                           foreground=self.colors['accent'],
                            font=('Segoe UI', 11, 'bold'))
         
-        # ==================== TREEVIEW STYLES ====================
+        # ==================== TREEVIEW STYLES (30% SECONDARY) ====================
         self.style.configure('Treeview',
-                           background=self.colors['bg_card'],
+                           background=self.colors['secondary'],
                            foreground=self.colors['text_primary'],
-                           fieldbackground=self.colors['bg_card'],
+                           fieldbackground=self.colors['secondary'],
                            borderwidth=0,
                            font=('Segoe UI', 10),
                            rowheight=28)
         self.style.configure('Treeview.Heading',
-                           background=self.colors['bg_light'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['secondary_light'],
+                           foreground=self.colors['accent'],
                            font=('Segoe UI', 10, 'bold'),
                            borderwidth=0,
                            relief='flat')
+        # Selection uses 10% ACCENT
         self.style.map('Treeview',
-                      background=[('selected', self.colors['primary'])],
-                      foreground=[('selected', self.colors['bg_dark'])])
+                      background=[('selected', self.colors['accent'])],
+                      foreground=[('selected', self.colors['dominant'])])
         self.style.map('Treeview.Heading',
-                      background=[('active', self.colors['primary'])])
+                      background=[('active', self.colors['accent'])])
         
         # ==================== SCROLLBAR STYLES ====================
         self.style.configure('Vertical.TScrollbar',
-                           background=self.colors['bg_card'],
-                           troughcolor=self.colors['bg_dark'],
-                           bordercolor=self.colors['bg_dark'],
-                           arrowcolor=self.colors['primary'],
-                           width=12)
+                           background=self.colors['secondary_light'],
+                           troughcolor=self.colors['dominant'],
+                           bordercolor=self.colors['dominant'],
+                           arrowcolor=self.colors['accent'],
+                           width=10)
         self.style.map('Vertical.TScrollbar',
-                      background=[('active', self.colors['primary']),
-                                ('pressed', self.colors['primary_hover'])])
+                      background=[('active', self.colors['accent']),
+                                ('pressed', self.colors['accent_hover'])])
         
         self.style.configure('Horizontal.TScrollbar',
-                           background=self.colors['bg_card'],
-                           troughcolor=self.colors['bg_dark'],
-                           bordercolor=self.colors['bg_dark'],
-                           arrowcolor=self.colors['primary'],
-                           width=12)
+                           background=self.colors['secondary_light'],
+                           troughcolor=self.colors['dominant'],
+                           bordercolor=self.colors['dominant'],
+                           arrowcolor=self.colors['accent'],
+                           width=10)
         
-        # ==================== PROGRESSBAR STYLES ====================
+        # ==================== PROGRESSBAR STYLES (10% ACCENT) ====================
         self.style.configure('Horizontal.TProgressbar',
-                           background=self.colors['primary'],
-                           troughcolor=self.colors['bg_card'],
+                           background=self.colors['accent'],
+                           troughcolor=self.colors['secondary'],
                            bordercolor=self.colors['border'],
-                           lightcolor=self.colors['primary'],
-                           darkcolor=self.colors['primary_hover'])
+                           lightcolor=self.colors['accent'],
+                           darkcolor=self.colors['accent_muted'])
         
-        # ==================== PANEDWINDOW STYLES ====================
+        # ==================== PANEDWINDOW STYLES (60% DOMINANT) ====================
         self.style.configure('TPanedwindow',
-                           background=self.colors['bg_dark'])
+                           background=self.colors['dominant'])
         
         # ==================== NOTEBOOK STYLES ====================
         self.style.configure('TNotebook',
-                           background=self.colors['bg_dark'],
+                           background=self.colors['dominant'],
                            borderwidth=0)
         self.style.configure('TNotebook.Tab',
-                           background=self.colors['bg_card'],
+                           background=self.colors['secondary'],
                            foreground=self.colors['text_secondary'],
                            padding=(15, 8),
                            font=('Segoe UI', 10))
         self.style.map('TNotebook.Tab',
-                      background=[('selected', self.colors['primary'])],
-                      foreground=[('selected', self.colors['bg_dark'])])
+                      background=[('selected', self.colors['accent'])],
+                      foreground=[('selected', self.colors['dominant'])])
         
         # ==================== STATUS BAR STYLE ====================
         self.style.configure('Status.TLabel',
-                           background=self.colors['bg_medium'],
-                           foreground=self.colors['primary'],
+                           background=self.colors['dominant_alt'],
+                           foreground=self.colors['accent'],
                            font=('Segoe UI', 10),
                            padding=(10, 5))
         
         self.style.configure('StatusBar.TFrame',
-                           background=self.colors['bg_medium'])
+                           background=self.colors['dominant_alt'])
 
     def create_menu(self):
-        """Create application menu bar with dark theme"""
-        # Menu styling options
-        menu_bg = '#1f2940'
-        menu_fg = '#ffffff'
-        menu_active_bg = '#00d9ff'
-        menu_active_fg = '#1a1a2e'
+        """Create application menu bar with 60-30-10 dark theme"""
+        # Menu styling using 60-30-10 colors
+        menu_bg = '#21262d'          # 30% SECONDARY
+        menu_fg = '#f0f6fc'          # Text primary
+        menu_active_bg = '#58a6ff'   # 10% ACCENT
+        menu_active_fg = '#0d1117'   # DOMINANT
         
         menubar = tk.Menu(self.root, 
                          bg=menu_bg, 
@@ -593,22 +607,22 @@ class HyperFTP:
         
         self.log_text = scrolledtext.ScrolledText(log_frame, height=6, 
                                                   font=('Consolas', 10),
-                                                  bg='#1f2940',
-                                                  fg='#b0bec5',
-                                                  insertbackground='#00d9ff',
-                                                  selectbackground='#00d9ff',
-                                                  selectforeground='#1a1a2e',
+                                                  bg='#21262d',           # 30% SECONDARY
+                                                  fg='#8b949e',           # Text secondary
+                                                  insertbackground='#58a6ff',  # 10% ACCENT
+                                                  selectbackground='#58a6ff',  # 10% ACCENT
+                                                  selectforeground='#0d1117',  # DOMINANT
                                                   relief='flat',
                                                   padx=10,
                                                   pady=8,
                                                   state=tk.DISABLED)
         self.log_text.pack(fill=tk.X)
         
-        # Configure log tags with vibrant colors
-        self.log_text.tag_configure('info', foreground='#00d9ff')
-        self.log_text.tag_configure('success', foreground='#00e676')
-        self.log_text.tag_configure('error', foreground='#ff5252')
-        self.log_text.tag_configure('warning', foreground='#ffab00')
+        # Configure log tags using 10% ACCENT colors
+        self.log_text.tag_configure('info', foreground='#58a6ff')     # Accent blue
+        self.log_text.tag_configure('success', foreground='#3fb950')  # Success green
+        self.log_text.tag_configure('error', foreground='#f85149')    # Danger red
+        self.log_text.tag_configure('warning', foreground='#d29922')  # Warning orange
 
     def create_status_bar(self):
         """Create status bar"""
@@ -1142,10 +1156,10 @@ class HyperFTP:
     # ==================== CONTEXT MENUS ====================
     
     def local_context_menu(self, event):
-        """Show local file context menu with dark theme"""
+        """Show local file context menu with 60-30-10 theme"""
         menu = tk.Menu(self.root, tearoff=0,
-                      bg='#1f2940', fg='#ffffff',
-                      activebackground='#00d9ff', activeforeground='#1a1a2e')
+                      bg='#21262d', fg='#f0f6fc',           # 30% SECONDARY
+                      activebackground='#58a6ff', activeforeground='#0d1117')  # 10% ACCENT
         menu.add_command(label="  ⬆️ Upload", command=self.upload_file)
         menu.add_command(label="  📁 New Folder", command=self.create_local_folder)
         menu.add_command(label="  🗑️ Delete", command=self.delete_local_file)
@@ -1154,13 +1168,13 @@ class HyperFTP:
         menu.tk_popup(event.x_root, event.y_root)
 
     def remote_context_menu(self, event):
-        """Show remote file context menu with dark theme"""
+        """Show remote file context menu with 60-30-10 theme"""
         if not self.connected:
             return
         
         menu = tk.Menu(self.root, tearoff=0,
-                      bg='#1f2940', fg='#ffffff',
-                      activebackground='#00d9ff', activeforeground='#1a1a2e')
+                      bg='#21262d', fg='#f0f6fc',           # 30% SECONDARY
+                      activebackground='#58a6ff', activeforeground='#0d1117')  # 10% ACCENT
         menu.add_command(label="  ⬇️ Download", command=self.download_file)
         menu.add_command(label="  📁 New Folder", command=self.create_remote_folder)
         menu.add_command(label="  ✏️ Rename", command=self.rename_remote_file)
