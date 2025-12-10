@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 ╔═══════════════════════════════════════════════════════════════════════════════╗
-║                             HyperFTP v1.0                                     ║
+║                             HyperFTP v1.0.0                                   ║
 ║                    Professional FTP Client for Python                         ║
 ║                                                                               ║
-║  Author: HyperFTP Team                                                        ║
+║  Author: rajeshsharma-sec                                                        ║
 ║  License: MIT                                                                 ║
 ║  Python: 3.8+                                                                 ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -58,336 +58,80 @@ class HyperFTP:
         self.refresh_local_files()
 
     def setup_styles(self):
-        """Configure modern dark theme styles using 60-30-10 color rule"""
+        """Configure modern ttk styles"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # ============================================================
-        # MINIMALIST BLACK & WHITE THEME
-        # ============================================================
-        # Only 2 colors: Black (#0a0a0a) and White (#ffffff)
-        # Clean, professional, distraction-free
-        # ============================================================
-        
-        BLACK = '#0a0a0a'
-        WHITE = '#ffffff'
-        GRAY = '#1a1a1a'      # Slightly lighter black for cards
-        LIGHT_GRAY = '#2a2a2a'  # For borders/hover
-        
+        # Custom colors
         self.colors = {
-            # Backgrounds
-            'dominant': BLACK,
-            'dominant_alt': BLACK,
-            'secondary': GRAY,
-            'secondary_light': LIGHT_GRAY,
-            'secondary_border': LIGHT_GRAY,
-            
-            # Accent = White
-            'accent': WHITE,
-            'accent_hover': '#e0e0e0',
-            'accent_muted': '#cccccc',
-            
-            # Semantic (all white-based)
-            'success': WHITE,
-            'success_hover': '#e0e0e0',
-            'danger': WHITE,
-            'danger_hover': '#e0e0e0',
-            'warning': WHITE,
-            
-            # Text = White
-            'text_primary': WHITE,
-            'text_secondary': '#b0b0b0',
-            'text_muted': '#707070',
-            'text_on_accent': BLACK,
-            
-            # Borders
-            'border': LIGHT_GRAY,
-            'border_light': '#3a3a3a',
-            'border_muted': GRAY,
+            'primary': '#2196F3',
+            'success': '#4CAF50',
+            'danger': '#f44336',
+            'warning': '#FF9800',
+            'dark': '#333333',
+            'light': '#f5f5f5',
+            'white': '#ffffff'
         }
         
-        # Configure root window (60% DOMINANT)
-        self.root.configure(bg=self.colors['dominant'])
-        
-        # ==================== FRAME STYLES (60% DOMINANT) ====================
-        self.style.configure('TFrame',
-                           background=self.colors['dominant'])
-        
-        self.style.configure('Card.TFrame',
-                           background=self.colors['secondary'],
-                           relief='flat')
-        
-        # ==================== LABEL STYLES ====================
-        self.style.configure('TLabel',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['text_primary'],
-                           font=('Segoe UI', 10))
-        
-        self.style.configure('Header.TLabel',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['accent'],
-                           font=('Segoe UI', 12, 'bold'))
-        
-        self.style.configure('Muted.TLabel',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['text_muted'],
-                           font=('Segoe UI', 9))
-        
-        # ==================== BUTTON STYLES (10% ACCENT for Primary) ====================
-        # Primary Button - Uses ACCENT color (10%)
-        self.style.configure('Primary.TButton',
-                           background=self.colors['accent'],
-                           foreground=self.colors['dominant'],
-                           font=('Segoe UI', 10, 'bold'),
-                           padding=(15, 8),
-                           borderwidth=0)
-        self.style.map('Primary.TButton',
-                      background=[('active', self.colors['accent_hover']),
-                                ('pressed', self.colors['accent_muted'])])
-        
-        # Success Button - Semantic accent (within 10%)
-        self.style.configure('Success.TButton',
-                           background=self.colors['success'],
-                           foreground=self.colors['dominant'],
-                           font=('Segoe UI', 10, 'bold'),
-                           padding=(15, 8),
-                           borderwidth=0)
-        self.style.map('Success.TButton',
-                      background=[('active', self.colors['success_hover']),
-                                ('pressed', self.colors['success']),
-                                ('disabled', self.colors['secondary_light'])])
-        
-        # Danger Button - Semantic accent (within 10%)
-        self.style.configure('Danger.TButton',
-                           background=self.colors['danger'],
-                           foreground=self.colors['text_on_accent'],
-                           font=('Segoe UI', 10, 'bold'),
-                           padding=(15, 8),
-                           borderwidth=0)
-        self.style.map('Danger.TButton',
-                      background=[('active', self.colors['danger_hover']),
-                                ('pressed', self.colors['danger']),
-                                ('disabled', self.colors['secondary_light'])])
-        
-        # Secondary Button (30% SECONDARY) - Uses secondary colors
-        self.style.configure('Secondary.TButton',
-                           background=self.colors['secondary_light'],
-                           foreground=self.colors['text_primary'],
-                           font=('Segoe UI', 10),
-                           padding=(12, 6),
-                           borderwidth=1)
-        self.style.map('Secondary.TButton',
-                      background=[('active', self.colors['accent']),
-                                ('pressed', self.colors['accent_muted'])])
-        
-        # Toolbar Button (30% SECONDARY)
-        self.style.configure('Toolbar.TButton',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['text_primary'],
-                           font=('Segoe UI', 9),
-                           padding=(10, 6),
-                           borderwidth=1)
-        self.style.map('Toolbar.TButton',
-                      background=[('active', self.colors['secondary_light']),
-                                ('pressed', self.colors['accent'])])
-        
-        # Icon Button (30% SECONDARY)
-        self.style.configure('Icon.TButton',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['text_primary'],
-                           font=('Segoe UI', 11),
-                           padding=(8, 4),
-                           borderwidth=0)
-        self.style.map('Icon.TButton',
-                      background=[('active', self.colors['secondary_light'])])
-        
-        # ==================== ENTRY STYLES (30% SECONDARY) ====================
-        self.style.configure('TEntry',
-                           fieldbackground=self.colors['secondary'],
-                           foreground=self.colors['text_primary'],
-                           insertcolor=self.colors['accent'],
-                           borderwidth=1,
-                           relief='flat',
-                           padding=(8, 6))
-        self.style.map('TEntry',
-                      fieldbackground=[('focus', self.colors['secondary_light'])],
-                      bordercolor=[('focus', self.colors['accent'])])
-        
-        # ==================== COMBOBOX STYLES (30% SECONDARY) ====================
-        self.style.configure('TCombobox',
-                           fieldbackground=self.colors['secondary'],
-                           background=self.colors['secondary'],
-                           foreground=self.colors['text_primary'],
-                           arrowcolor=self.colors['accent'],
-                           borderwidth=1,
-                           padding=(8, 6))
-        self.style.map('TCombobox',
-                      fieldbackground=[('focus', self.colors['secondary_light'])],
-                      background=[('active', self.colors['secondary_light'])])
-        
-        # ==================== CHECKBOX STYLES (60% DOMINANT bg) ====================
-        self.style.configure('TCheckbutton',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['text_primary'],
-                           font=('Segoe UI', 10))
-        self.style.map('TCheckbutton',
-                      background=[('active', self.colors['dominant'])])
-        
-        # ==================== LABELFRAME STYLES ====================
-        # Main LabelFrame (60% DOMINANT)
-        self.style.configure('TLabelframe',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['accent'],
-                           bordercolor=self.colors['border'],
-                           relief='solid',
-                           borderwidth=1)
-        self.style.configure('TLabelframe.Label',
-                           background=self.colors['dominant'],
-                           foreground=self.colors['accent'],
-                           font=('Segoe UI', 11, 'bold'))
-        
-        # Card LabelFrame (30% SECONDARY)
-        self.style.configure('Card.TLabelframe',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['accent'],
-                           bordercolor=self.colors['border_light'],
-                           relief='solid',
-                           borderwidth=1)
-        self.style.configure('Card.TLabelframe.Label',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['accent'],
-                           font=('Segoe UI', 11, 'bold'))
-        
-        # ==================== TREEVIEW STYLES (30% SECONDARY) ====================
-        self.style.configure('Treeview',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['text_primary'],
-                           fieldbackground=self.colors['secondary'],
-                           borderwidth=0,
-                           font=('Segoe UI', 10),
-                           rowheight=28)
-        self.style.configure('Treeview.Heading',
-                           background=self.colors['secondary_light'],
-                           foreground=self.colors['accent'],
-                           font=('Segoe UI', 10, 'bold'),
-                           borderwidth=0,
-                           relief='flat')
-        # Selection uses 10% ACCENT
-        self.style.map('Treeview',
-                      background=[('selected', self.colors['accent'])],
-                      foreground=[('selected', self.colors['dominant'])])
-        self.style.map('Treeview.Heading',
-                      background=[('active', self.colors['accent'])])
-        
-        # ==================== SCROLLBAR STYLES ====================
-        self.style.configure('Vertical.TScrollbar',
-                           background=self.colors['secondary_light'],
-                           troughcolor=self.colors['dominant'],
-                           bordercolor=self.colors['dominant'],
-                           arrowcolor=self.colors['accent'],
-                           width=10)
-        self.style.map('Vertical.TScrollbar',
-                      background=[('active', self.colors['accent']),
-                                ('pressed', self.colors['accent_hover'])])
-        
-        self.style.configure('Horizontal.TScrollbar',
-                           background=self.colors['secondary_light'],
-                           troughcolor=self.colors['dominant'],
-                           bordercolor=self.colors['dominant'],
-                           arrowcolor=self.colors['accent'],
-                           width=10)
-        
-        # ==================== PROGRESSBAR STYLES (10% ACCENT) ====================
-        self.style.configure('Horizontal.TProgressbar',
-                           background=self.colors['accent'],
-                           troughcolor=self.colors['secondary'],
-                           bordercolor=self.colors['border'],
-                           lightcolor=self.colors['accent'],
-                           darkcolor=self.colors['accent_muted'])
-        
-        # ==================== PANEDWINDOW STYLES (60% DOMINANT) ====================
-        self.style.configure('TPanedwindow',
-                           background=self.colors['dominant'])
-        
-        # ==================== NOTEBOOK STYLES ====================
-        self.style.configure('TNotebook',
-                           background=self.colors['dominant'],
-                           borderwidth=0)
-        self.style.configure('TNotebook.Tab',
-                           background=self.colors['secondary'],
-                           foreground=self.colors['text_secondary'],
-                           padding=(15, 8),
-                           font=('Segoe UI', 10))
-        self.style.map('TNotebook.Tab',
-                      background=[('selected', self.colors['accent'])],
-                      foreground=[('selected', self.colors['dominant'])])
-        
-        # ==================== STATUS BAR STYLE ====================
-        self.style.configure('Status.TLabel',
-                           background=self.colors['dominant_alt'],
-                           foreground=self.colors['accent'],
-                           font=('Segoe UI', 10),
+        # Configure styles
+        self.style.configure('Primary.TButton', 
+                           background=self.colors['primary'],
+                           foreground='white',
                            padding=(10, 5))
         
-        self.style.configure('StatusBar.TFrame',
-                           background=self.colors['dominant_alt'])
+        self.style.configure('Success.TButton',
+                           background=self.colors['success'],
+                           foreground='white',
+                           padding=(10, 5))
+        
+        self.style.configure('Danger.TButton',
+                           background=self.colors['danger'],
+                           foreground='white',
+                           padding=(10, 5))
+        
+        self.style.configure('Toolbar.TButton',
+                           padding=(8, 4))
+        
+        self.style.configure('Header.TLabel',
+                           font=('Segoe UI', 11, 'bold'))
+        
+        self.style.configure('Status.TLabel',
+                           background=self.colors['dark'],
+                           foreground='white',
+                           padding=(5, 2))
 
     def create_menu(self):
-        """Create application menu bar with black & white theme"""
-        # Black and white menu colors
-        menu_bg = '#1a1a1a'
-        menu_fg = '#ffffff'
-        menu_active_bg = '#ffffff'
-        menu_active_fg = '#0a0a0a'
-        
-        menubar = tk.Menu(self.root, 
-                         bg=menu_bg, 
-                         fg=menu_fg,
-                         activebackground=menu_active_bg,
-                         activeforeground=menu_active_fg,
-                         borderwidth=0,
-                         relief='flat')
+        """Create application menu bar"""
+        menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
         
         # File menu
-        file_menu = tk.Menu(menubar, tearoff=0,
-                           bg=menu_bg, fg=menu_fg,
-                           activebackground=menu_active_bg,
-                           activeforeground=menu_active_fg)
-        menubar.add_cascade(label="  File  ", menu=file_menu)
-        file_menu.add_command(label="  📄 New Connection", command=self.new_connection, accelerator="Ctrl+N")
-        file_menu.add_command(label="  💾 Save Connection", command=self.save_current_connection)
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="New Connection", command=self.new_connection, accelerator="Ctrl+N")
+        file_menu.add_command(label="Save Connection", command=self.save_current_connection)
         file_menu.add_separator()
-        file_menu.add_command(label="  🚪 Exit", command=self.on_closing, accelerator="Alt+F4")
+        file_menu.add_command(label="Exit", command=self.on_closing, accelerator="Alt+F4")
         
         # Transfer menu
-        transfer_menu = tk.Menu(menubar, tearoff=0,
-                               bg=menu_bg, fg=menu_fg,
-                               activebackground=menu_active_bg,
-                               activeforeground=menu_active_fg)
-        menubar.add_cascade(label="  Transfer  ", menu=transfer_menu)
-        transfer_menu.add_command(label="  ⬆️ Upload", command=self.upload_file, accelerator="Ctrl+U")
-        transfer_menu.add_command(label="  ⬇️ Download", command=self.download_file, accelerator="Ctrl+D")
+        transfer_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Transfer", menu=transfer_menu)
+        transfer_menu.add_command(label="Upload", command=self.upload_file, accelerator="Ctrl+U")
+        transfer_menu.add_command(label="Download", command=self.download_file, accelerator="Ctrl+D")
         transfer_menu.add_separator()
-        transfer_menu.add_command(label="  📁 Upload Folder", command=self.upload_folder)
+        transfer_menu.add_command(label="Upload Folder", command=self.upload_folder)
         
         # View menu
-        view_menu = tk.Menu(menubar, tearoff=0,
-                           bg=menu_bg, fg=menu_fg,
-                           activebackground=menu_active_bg,
-                           activeforeground=menu_active_fg)
-        menubar.add_cascade(label="  View  ", menu=view_menu)
-        view_menu.add_command(label="  🔄 Refresh Local", command=self.refresh_local_files, accelerator="F5")
-        view_menu.add_command(label="  🔄 Refresh Remote", command=self.refresh_remote_files, accelerator="F6")
+        view_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="View", menu=view_menu)
+        view_menu.add_command(label="Refresh Local", command=self.refresh_local_files, accelerator="F5")
+        view_menu.add_command(label="Refresh Remote", command=self.refresh_remote_files, accelerator="F6")
         
         # Help menu
-        help_menu = tk.Menu(menubar, tearoff=0,
-                           bg=menu_bg, fg=menu_fg,
-                           activebackground=menu_active_bg,
-                           activeforeground=menu_active_fg)
-        menubar.add_cascade(label="  Help  ", menu=help_menu)
-        help_menu.add_command(label="  ℹ️ About", command=self.show_about)
-        help_menu.add_command(label="  📖 Documentation", command=self.show_docs)
+        help_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label="About", command=self.show_about)
+        help_menu.add_command(label="Documentation", command=self.show_docs)
         
         # Keyboard shortcuts
         self.root.bind('<Control-n>', lambda e: self.new_connection())
@@ -604,24 +348,16 @@ class HyperFTP:
         log_frame = ttk.LabelFrame(self.root, text="📋 Transfer Log", padding="5")
         log_frame.pack(fill=tk.X, padx=5, pady=5)
         
-        self.log_text = scrolledtext.ScrolledText(log_frame, height=10, 
-                                                  font=('Consolas', 10),
-                                                  bg='#1a1a1a',
-                                                  fg='#b0b0b0',
-                                                  insertbackground='#ffffff',
-                                                  selectbackground='#ffffff',
-                                                  selectforeground='#0a0a0a',
-                                                  relief='flat',
-                                                  padx=10,
-                                                  pady=8,
+        self.log_text = scrolledtext.ScrolledText(log_frame, height=6, 
+                                                  font=('Consolas', 9),
                                                   state=tk.DISABLED)
         self.log_text.pack(fill=tk.X)
         
-        # Log tags - all white for minimalist look
-        self.log_text.tag_configure('info', foreground='#ffffff')
-        self.log_text.tag_configure('success', foreground='#ffffff')
-        self.log_text.tag_configure('error', foreground='#ff6b6b')    # Only red for errors
-        self.log_text.tag_configure('warning', foreground='#ffd93d')  # Only yellow for warnings
+        # Configure log tags
+        self.log_text.tag_configure('info', foreground='#2196F3')
+        self.log_text.tag_configure('success', foreground='#4CAF50')
+        self.log_text.tag_configure('error', foreground='#f44336')
+        self.log_text.tag_configure('warning', foreground='#FF9800')
 
     def create_status_bar(self):
         """Create status bar"""
@@ -1155,31 +891,27 @@ class HyperFTP:
     # ==================== CONTEXT MENUS ====================
     
     def local_context_menu(self, event):
-        """Show local file context menu with Catppuccin theme"""
-        menu = tk.Menu(self.root, tearoff=0,
-                      bg='#313244', fg='#cdd6f4',           # Surface0, Text
-                      activebackground='#cba6f7', activeforeground='#1e1e2e')  # Mauve, Base
-        menu.add_command(label="  ⬆️ Upload", command=self.upload_file)
-        menu.add_command(label="  📁 New Folder", command=self.create_local_folder)
-        menu.add_command(label="  🗑️ Delete", command=self.delete_local_file)
+        """Show local file context menu"""
+        menu = tk.Menu(self.root, tearoff=0)
+        menu.add_command(label="Upload", command=self.upload_file)
+        menu.add_command(label="New Folder", command=self.create_local_folder)
+        menu.add_command(label="Delete", command=self.delete_local_file)
         menu.add_separator()
-        menu.add_command(label="  🔄 Refresh", command=self.refresh_local_files)
+        menu.add_command(label="Refresh", command=self.refresh_local_files)
         menu.tk_popup(event.x_root, event.y_root)
 
     def remote_context_menu(self, event):
-        """Show remote file context menu with Catppuccin theme"""
+        """Show remote file context menu"""
         if not self.connected:
             return
         
-        menu = tk.Menu(self.root, tearoff=0,
-                      bg='#313244', fg='#cdd6f4',           # Surface0, Text
-                      activebackground='#cba6f7', activeforeground='#1e1e2e')  # Mauve, Base
-        menu.add_command(label="  ⬇️ Download", command=self.download_file)
-        menu.add_command(label="  📁 New Folder", command=self.create_remote_folder)
-        menu.add_command(label="  ✏️ Rename", command=self.rename_remote_file)
-        menu.add_command(label="  🗑️ Delete", command=self.delete_remote_file)
+        menu = tk.Menu(self.root, tearoff=0)
+        menu.add_command(label="Download", command=self.download_file)
+        menu.add_command(label="New Folder", command=self.create_remote_folder)
+        menu.add_command(label="Rename", command=self.rename_remote_file)
+        menu.add_command(label="Delete", command=self.delete_remote_file)
         menu.add_separator()
-        menu.add_command(label="  🔄 Refresh", command=self.refresh_remote_files)
+        menu.add_command(label="Refresh", command=self.refresh_remote_files)
         menu.tk_popup(event.x_root, event.y_root)
 
     # ==================== CONNECTION MANAGEMENT ====================
@@ -1342,9 +1074,10 @@ Features:
 • Progress tracking
 • Transfer logging
 
+Created by: rajeshsharma-sec
 License: MIT
 
-© 2024 HyperFTP Team
+© 2025 rajeshsharma-sec
         """
         messagebox.showinfo("About", about_text.strip())
 
