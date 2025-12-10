@@ -58,80 +58,323 @@ class HyperFTP:
         self.refresh_local_files()
 
     def setup_styles(self):
-        """Configure modern ttk styles"""
+        """Configure modern dark theme styles"""
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Custom colors
+        # Modern Dark Color Palette
         self.colors = {
-            'primary': '#2196F3',
-            'success': '#4CAF50',
-            'danger': '#f44336',
-            'warning': '#FF9800',
-            'dark': '#333333',
-            'light': '#f5f5f5',
-            'white': '#ffffff'
+            # Base colors
+            'bg_dark': '#1a1a2e',
+            'bg_medium': '#16213e',
+            'bg_light': '#0f3460',
+            'bg_card': '#1f2940',
+            
+            # Accent colors
+            'primary': '#00d9ff',
+            'primary_hover': '#00b8d4',
+            'secondary': '#7c4dff',
+            'success': '#00e676',
+            'success_hover': '#00c853',
+            'danger': '#ff5252',
+            'danger_hover': '#ff1744',
+            'warning': '#ffab00',
+            
+            # Text colors
+            'text_primary': '#ffffff',
+            'text_secondary': '#b0bec5',
+            'text_muted': '#78909c',
+            
+            # Border colors
+            'border': '#2d3a4f',
+            'border_light': '#3d4a5f',
+            
+            # Special
+            'highlight': '#e94560',
+            'gradient_start': '#00d9ff',
+            'gradient_end': '#7c4dff'
         }
         
-        # Configure styles
-        self.style.configure('Primary.TButton', 
-                           background=self.colors['primary'],
-                           foreground='white',
-                           padding=(10, 5))
+        # Configure root window
+        self.root.configure(bg=self.colors['bg_dark'])
         
-        self.style.configure('Success.TButton',
-                           background=self.colors['success'],
-                           foreground='white',
-                           padding=(10, 5))
+        # ==================== FRAME STYLES ====================
+        self.style.configure('TFrame',
+                           background=self.colors['bg_dark'])
         
-        self.style.configure('Danger.TButton',
-                           background=self.colors['danger'],
-                           foreground='white',
-                           padding=(10, 5))
+        self.style.configure('Card.TFrame',
+                           background=self.colors['bg_card'],
+                           relief='flat')
         
-        self.style.configure('Toolbar.TButton',
-                           padding=(8, 4))
+        # ==================== LABEL STYLES ====================
+        self.style.configure('TLabel',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 10))
         
         self.style.configure('Header.TLabel',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['primary'],
+                           font=('Segoe UI', 12, 'bold'))
+        
+        self.style.configure('Muted.TLabel',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['text_muted'],
+                           font=('Segoe UI', 9))
+        
+        # ==================== BUTTON STYLES ====================
+        # Primary Button (Cyan)
+        self.style.configure('Primary.TButton',
+                           background=self.colors['primary'],
+                           foreground=self.colors['bg_dark'],
+                           font=('Segoe UI', 10, 'bold'),
+                           padding=(15, 8),
+                           borderwidth=0)
+        self.style.map('Primary.TButton',
+                      background=[('active', self.colors['primary_hover']),
+                                ('pressed', self.colors['primary_hover'])])
+        
+        # Success Button (Green)
+        self.style.configure('Success.TButton',
+                           background=self.colors['success'],
+                           foreground=self.colors['bg_dark'],
+                           font=('Segoe UI', 10, 'bold'),
+                           padding=(15, 8),
+                           borderwidth=0)
+        self.style.map('Success.TButton',
+                      background=[('active', self.colors['success_hover']),
+                                ('pressed', self.colors['success_hover']),
+                                ('disabled', '#2d4a3d')])
+        
+        # Danger Button (Red)
+        self.style.configure('Danger.TButton',
+                           background=self.colors['danger'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 10, 'bold'),
+                           padding=(15, 8),
+                           borderwidth=0)
+        self.style.map('Danger.TButton',
+                      background=[('active', self.colors['danger_hover']),
+                                ('pressed', self.colors['danger_hover']),
+                                ('disabled', '#4a2d2d')])
+        
+        # Secondary Button (Purple)
+        self.style.configure('Secondary.TButton',
+                           background=self.colors['secondary'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 10),
+                           padding=(12, 6),
+                           borderwidth=0)
+        self.style.map('Secondary.TButton',
+                      background=[('active', '#9c6dff'),
+                                ('pressed', '#6a3dcc')])
+        
+        # Toolbar Button (Outline style)
+        self.style.configure('Toolbar.TButton',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 9),
+                           padding=(10, 5),
+                           borderwidth=1)
+        self.style.map('Toolbar.TButton',
+                      background=[('active', self.colors['bg_light']),
+                                ('pressed', self.colors['primary'])])
+        
+        # Icon Button (Small)
+        self.style.configure('Icon.TButton',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 11),
+                           padding=(8, 4),
+                           borderwidth=0)
+        self.style.map('Icon.TButton',
+                      background=[('active', self.colors['bg_light'])])
+        
+        # ==================== ENTRY STYLES ====================
+        self.style.configure('TEntry',
+                           fieldbackground=self.colors['bg_card'],
+                           foreground=self.colors['text_primary'],
+                           insertcolor=self.colors['primary'],
+                           borderwidth=2,
+                           relief='flat',
+                           padding=(8, 6))
+        self.style.map('TEntry',
+                      fieldbackground=[('focus', self.colors['bg_light'])],
+                      bordercolor=[('focus', self.colors['primary'])])
+        
+        # ==================== COMBOBOX STYLES ====================
+        self.style.configure('TCombobox',
+                           fieldbackground=self.colors['bg_card'],
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['text_primary'],
+                           arrowcolor=self.colors['primary'],
+                           borderwidth=2,
+                           padding=(8, 6))
+        self.style.map('TCombobox',
+                      fieldbackground=[('focus', self.colors['bg_light'])],
+                      background=[('active', self.colors['bg_light'])])
+        
+        # ==================== CHECKBOX STYLES ====================
+        self.style.configure('TCheckbutton',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['text_primary'],
+                           font=('Segoe UI', 10))
+        self.style.map('TCheckbutton',
+                      background=[('active', self.colors['bg_dark'])])
+        
+        # ==================== LABELFRAME STYLES ====================
+        self.style.configure('TLabelframe',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['primary'],
+                           bordercolor=self.colors['border'],
+                           relief='solid',
+                           borderwidth=1)
+        self.style.configure('TLabelframe.Label',
+                           background=self.colors['bg_dark'],
+                           foreground=self.colors['primary'],
                            font=('Segoe UI', 11, 'bold'))
         
+        # Card LabelFrame
+        self.style.configure('Card.TLabelframe',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['primary'],
+                           bordercolor=self.colors['border_light'],
+                           relief='solid',
+                           borderwidth=1)
+        self.style.configure('Card.TLabelframe.Label',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['primary'],
+                           font=('Segoe UI', 11, 'bold'))
+        
+        # ==================== TREEVIEW STYLES ====================
+        self.style.configure('Treeview',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['text_primary'],
+                           fieldbackground=self.colors['bg_card'],
+                           borderwidth=0,
+                           font=('Segoe UI', 10),
+                           rowheight=28)
+        self.style.configure('Treeview.Heading',
+                           background=self.colors['bg_light'],
+                           foreground=self.colors['primary'],
+                           font=('Segoe UI', 10, 'bold'),
+                           borderwidth=0,
+                           relief='flat')
+        self.style.map('Treeview',
+                      background=[('selected', self.colors['primary'])],
+                      foreground=[('selected', self.colors['bg_dark'])])
+        self.style.map('Treeview.Heading',
+                      background=[('active', self.colors['primary'])])
+        
+        # ==================== SCROLLBAR STYLES ====================
+        self.style.configure('Vertical.TScrollbar',
+                           background=self.colors['bg_card'],
+                           troughcolor=self.colors['bg_dark'],
+                           bordercolor=self.colors['bg_dark'],
+                           arrowcolor=self.colors['primary'],
+                           width=12)
+        self.style.map('Vertical.TScrollbar',
+                      background=[('active', self.colors['primary']),
+                                ('pressed', self.colors['primary_hover'])])
+        
+        self.style.configure('Horizontal.TScrollbar',
+                           background=self.colors['bg_card'],
+                           troughcolor=self.colors['bg_dark'],
+                           bordercolor=self.colors['bg_dark'],
+                           arrowcolor=self.colors['primary'],
+                           width=12)
+        
+        # ==================== PROGRESSBAR STYLES ====================
+        self.style.configure('Horizontal.TProgressbar',
+                           background=self.colors['primary'],
+                           troughcolor=self.colors['bg_card'],
+                           bordercolor=self.colors['border'],
+                           lightcolor=self.colors['primary'],
+                           darkcolor=self.colors['primary_hover'])
+        
+        # ==================== PANEDWINDOW STYLES ====================
+        self.style.configure('TPanedwindow',
+                           background=self.colors['bg_dark'])
+        
+        # ==================== NOTEBOOK STYLES ====================
+        self.style.configure('TNotebook',
+                           background=self.colors['bg_dark'],
+                           borderwidth=0)
+        self.style.configure('TNotebook.Tab',
+                           background=self.colors['bg_card'],
+                           foreground=self.colors['text_secondary'],
+                           padding=(15, 8),
+                           font=('Segoe UI', 10))
+        self.style.map('TNotebook.Tab',
+                      background=[('selected', self.colors['primary'])],
+                      foreground=[('selected', self.colors['bg_dark'])])
+        
+        # ==================== STATUS BAR STYLE ====================
         self.style.configure('Status.TLabel',
-                           background=self.colors['dark'],
-                           foreground='white',
-                           padding=(5, 2))
+                           background=self.colors['bg_medium'],
+                           foreground=self.colors['primary'],
+                           font=('Segoe UI', 10),
+                           padding=(10, 5))
+        
+        self.style.configure('StatusBar.TFrame',
+                           background=self.colors['bg_medium'])
 
     def create_menu(self):
-        """Create application menu bar"""
-        menubar = tk.Menu(self.root)
+        """Create application menu bar with dark theme"""
+        # Menu styling options
+        menu_bg = '#1f2940'
+        menu_fg = '#ffffff'
+        menu_active_bg = '#00d9ff'
+        menu_active_fg = '#1a1a2e'
+        
+        menubar = tk.Menu(self.root, 
+                         bg=menu_bg, 
+                         fg=menu_fg,
+                         activebackground=menu_active_bg,
+                         activeforeground=menu_active_fg,
+                         borderwidth=0,
+                         relief='flat')
         self.root.config(menu=menubar)
         
         # File menu
-        file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="New Connection", command=self.new_connection, accelerator="Ctrl+N")
-        file_menu.add_command(label="Save Connection", command=self.save_current_connection)
+        file_menu = tk.Menu(menubar, tearoff=0,
+                           bg=menu_bg, fg=menu_fg,
+                           activebackground=menu_active_bg,
+                           activeforeground=menu_active_fg)
+        menubar.add_cascade(label="  File  ", menu=file_menu)
+        file_menu.add_command(label="  📄 New Connection", command=self.new_connection, accelerator="Ctrl+N")
+        file_menu.add_command(label="  💾 Save Connection", command=self.save_current_connection)
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.on_closing, accelerator="Alt+F4")
+        file_menu.add_command(label="  🚪 Exit", command=self.on_closing, accelerator="Alt+F4")
         
         # Transfer menu
-        transfer_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Transfer", menu=transfer_menu)
-        transfer_menu.add_command(label="Upload", command=self.upload_file, accelerator="Ctrl+U")
-        transfer_menu.add_command(label="Download", command=self.download_file, accelerator="Ctrl+D")
+        transfer_menu = tk.Menu(menubar, tearoff=0,
+                               bg=menu_bg, fg=menu_fg,
+                               activebackground=menu_active_bg,
+                               activeforeground=menu_active_fg)
+        menubar.add_cascade(label="  Transfer  ", menu=transfer_menu)
+        transfer_menu.add_command(label="  ⬆️ Upload", command=self.upload_file, accelerator="Ctrl+U")
+        transfer_menu.add_command(label="  ⬇️ Download", command=self.download_file, accelerator="Ctrl+D")
         transfer_menu.add_separator()
-        transfer_menu.add_command(label="Upload Folder", command=self.upload_folder)
+        transfer_menu.add_command(label="  📁 Upload Folder", command=self.upload_folder)
         
         # View menu
-        view_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="View", menu=view_menu)
-        view_menu.add_command(label="Refresh Local", command=self.refresh_local_files, accelerator="F5")
-        view_menu.add_command(label="Refresh Remote", command=self.refresh_remote_files, accelerator="F6")
+        view_menu = tk.Menu(menubar, tearoff=0,
+                           bg=menu_bg, fg=menu_fg,
+                           activebackground=menu_active_bg,
+                           activeforeground=menu_active_fg)
+        menubar.add_cascade(label="  View  ", menu=view_menu)
+        view_menu.add_command(label="  🔄 Refresh Local", command=self.refresh_local_files, accelerator="F5")
+        view_menu.add_command(label="  🔄 Refresh Remote", command=self.refresh_remote_files, accelerator="F6")
         
         # Help menu
-        help_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Help", menu=help_menu)
-        help_menu.add_command(label="About", command=self.show_about)
-        help_menu.add_command(label="Documentation", command=self.show_docs)
+        help_menu = tk.Menu(menubar, tearoff=0,
+                           bg=menu_bg, fg=menu_fg,
+                           activebackground=menu_active_bg,
+                           activeforeground=menu_active_fg)
+        menubar.add_cascade(label="  Help  ", menu=help_menu)
+        help_menu.add_command(label="  ℹ️ About", command=self.show_about)
+        help_menu.add_command(label="  📖 Documentation", command=self.show_docs)
         
         # Keyboard shortcuts
         self.root.bind('<Control-n>', lambda e: self.new_connection())
@@ -349,15 +592,23 @@ class HyperFTP:
         log_frame.pack(fill=tk.X, padx=5, pady=5)
         
         self.log_text = scrolledtext.ScrolledText(log_frame, height=6, 
-                                                  font=('Consolas', 9),
+                                                  font=('Consolas', 10),
+                                                  bg='#1f2940',
+                                                  fg='#b0bec5',
+                                                  insertbackground='#00d9ff',
+                                                  selectbackground='#00d9ff',
+                                                  selectforeground='#1a1a2e',
+                                                  relief='flat',
+                                                  padx=10,
+                                                  pady=8,
                                                   state=tk.DISABLED)
         self.log_text.pack(fill=tk.X)
         
-        # Configure log tags
-        self.log_text.tag_configure('info', foreground='#2196F3')
-        self.log_text.tag_configure('success', foreground='#4CAF50')
-        self.log_text.tag_configure('error', foreground='#f44336')
-        self.log_text.tag_configure('warning', foreground='#FF9800')
+        # Configure log tags with vibrant colors
+        self.log_text.tag_configure('info', foreground='#00d9ff')
+        self.log_text.tag_configure('success', foreground='#00e676')
+        self.log_text.tag_configure('error', foreground='#ff5252')
+        self.log_text.tag_configure('warning', foreground='#ffab00')
 
     def create_status_bar(self):
         """Create status bar"""
@@ -891,27 +1142,31 @@ class HyperFTP:
     # ==================== CONTEXT MENUS ====================
     
     def local_context_menu(self, event):
-        """Show local file context menu"""
-        menu = tk.Menu(self.root, tearoff=0)
-        menu.add_command(label="Upload", command=self.upload_file)
-        menu.add_command(label="New Folder", command=self.create_local_folder)
-        menu.add_command(label="Delete", command=self.delete_local_file)
+        """Show local file context menu with dark theme"""
+        menu = tk.Menu(self.root, tearoff=0,
+                      bg='#1f2940', fg='#ffffff',
+                      activebackground='#00d9ff', activeforeground='#1a1a2e')
+        menu.add_command(label="  ⬆️ Upload", command=self.upload_file)
+        menu.add_command(label="  📁 New Folder", command=self.create_local_folder)
+        menu.add_command(label="  🗑️ Delete", command=self.delete_local_file)
         menu.add_separator()
-        menu.add_command(label="Refresh", command=self.refresh_local_files)
+        menu.add_command(label="  🔄 Refresh", command=self.refresh_local_files)
         menu.tk_popup(event.x_root, event.y_root)
 
     def remote_context_menu(self, event):
-        """Show remote file context menu"""
+        """Show remote file context menu with dark theme"""
         if not self.connected:
             return
         
-        menu = tk.Menu(self.root, tearoff=0)
-        menu.add_command(label="Download", command=self.download_file)
-        menu.add_command(label="New Folder", command=self.create_remote_folder)
-        menu.add_command(label="Rename", command=self.rename_remote_file)
-        menu.add_command(label="Delete", command=self.delete_remote_file)
+        menu = tk.Menu(self.root, tearoff=0,
+                      bg='#1f2940', fg='#ffffff',
+                      activebackground='#00d9ff', activeforeground='#1a1a2e')
+        menu.add_command(label="  ⬇️ Download", command=self.download_file)
+        menu.add_command(label="  📁 New Folder", command=self.create_remote_folder)
+        menu.add_command(label="  ✏️ Rename", command=self.rename_remote_file)
+        menu.add_command(label="  🗑️ Delete", command=self.delete_remote_file)
         menu.add_separator()
-        menu.add_command(label="Refresh", command=self.refresh_remote_files)
+        menu.add_command(label="  🔄 Refresh", command=self.refresh_remote_files)
         menu.tk_popup(event.x_root, event.y_root)
 
     # ==================== CONNECTION MANAGEMENT ====================
