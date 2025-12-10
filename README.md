@@ -4,7 +4,7 @@ A professional FTP client built with Python featuring a modern GUI interface.
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Platform](https://img.shields.io/badge/Platform-Windows-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-blue.svg)
 
 ## ✨ Features
 
