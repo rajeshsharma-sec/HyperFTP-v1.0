@@ -63,45 +63,47 @@ class HyperFTP:
         self.style.theme_use('clam')
         
         # ============================================================
-        # PREMIUM DARK THEME - Dracula Inspired
+        # MINIMALIST BLACK & WHITE THEME
         # ============================================================
-        # 60% - DOMINANT (Rich dark purple-gray backgrounds)
-        # 30% - SECONDARY (Slightly lighter surfaces)
-        # 10% - ACCENT (Vibrant purple/pink/cyan highlights)
+        # Only 2 colors: Black (#0a0a0a) and White (#ffffff)
+        # Clean, professional, distraction-free
         # ============================================================
         
+        BLACK = '#0a0a0a'
+        WHITE = '#ffffff'
+        GRAY = '#1a1a1a'      # Slightly lighter black for cards
+        LIGHT_GRAY = '#2a2a2a'  # For borders/hover
+        
         self.colors = {
-            # ========== 60% DOMINANT - Rich Dark Base ==========
-            'dominant': '#1e1e2e',            # Catppuccin Mocha base
-            'dominant_alt': '#181825',        # Darker variant (mantle)
+            # Backgrounds
+            'dominant': BLACK,
+            'dominant_alt': BLACK,
+            'secondary': GRAY,
+            'secondary_light': LIGHT_GRAY,
+            'secondary_border': LIGHT_GRAY,
             
-            # ========== 30% SECONDARY - Elevated Surfaces ==========
-            'secondary': '#313244',           # Surface0 - cards
-            'secondary_light': '#45475a',     # Surface1 - hover
-            'secondary_border': '#585b70',    # Overlay0 - borders
+            # Accent = White
+            'accent': WHITE,
+            'accent_hover': '#e0e0e0',
+            'accent_muted': '#cccccc',
             
-            # ========== 10% ACCENT - Vibrant Highlights ==========
-            'accent': '#cba6f7',              # Mauve (purple) - primary
-            'accent_hover': '#f5c2e7',        # Pink - hover
-            'accent_muted': '#b4befe',        # Lavender - muted
+            # Semantic (all white-based)
+            'success': WHITE,
+            'success_hover': '#e0e0e0',
+            'danger': WHITE,
+            'danger_hover': '#e0e0e0',
+            'warning': WHITE,
             
-            # ========== Semantic Colors ==========
-            'success': '#a6e3a1',             # Green
-            'success_hover': '#94e2d5',       # Teal
-            'danger': '#f38ba8',              # Red/Pink
-            'danger_hover': '#eba0ac',        # Flamingo
-            'warning': '#fab387',             # Peach/Orange
+            # Text = White
+            'text_primary': WHITE,
+            'text_secondary': '#b0b0b0',
+            'text_muted': '#707070',
+            'text_on_accent': BLACK,
             
-            # ========== Text Colors ==========
-            'text_primary': '#cdd6f4',        # Text
-            'text_secondary': '#a6adc8',      # Subtext1
-            'text_muted': '#6c7086',          # Overlay1
-            'text_on_accent': '#1e1e2e',      # Base on accent
-            
-            # ========== Borders ==========
-            'border': '#45475a',              # Surface1
-            'border_light': '#585b70',        # Overlay0
-            'border_muted': '#313244',        # Surface0
+            # Borders
+            'border': LIGHT_GRAY,
+            'border_light': '#3a3a3a',
+            'border_muted': GRAY,
         }
         
         # Configure root window (60% DOMINANT)
@@ -331,12 +333,12 @@ class HyperFTP:
                            background=self.colors['dominant_alt'])
 
     def create_menu(self):
-        """Create application menu bar with premium dark theme"""
-        # Catppuccin Mocha menu colors
-        menu_bg = '#313244'          # Surface0
-        menu_fg = '#cdd6f4'          # Text
-        menu_active_bg = '#cba6f7'   # Mauve accent
-        menu_active_fg = '#1e1e2e'   # Base
+        """Create application menu bar with black & white theme"""
+        # Black and white menu colors
+        menu_bg = '#1a1a1a'
+        menu_fg = '#ffffff'
+        menu_active_bg = '#ffffff'
+        menu_active_fg = '#0a0a0a'
         
         menubar = tk.Menu(self.root, 
                          bg=menu_bg, 
