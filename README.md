@@ -18,12 +18,22 @@ A professional FTP client built with Python featuring a modern GUI interface.
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Windows Executable (Recommended)
+
+Download the standalone executable - no Python installation required:
+
+1. Go to [Releases](https://github.com/rajeshsharma-sec/HyperFTP-v1.0/releases)
+2. Download `HyperFTP.exe`
+3. Double-click to run
+
+### Option 2: Run from Source
+
+#### Prerequisites
 
 - Python 3.8 or higher
 - tkinter (usually included with Python)
 
-### Installation
+#### Installation
 
 ```bash
 # Clone the repository
@@ -34,6 +44,18 @@ cd HyperFTP-v1.0
 
 # Run the application
 python HyperFTP.py
+```
+
+### Build Executable Yourself
+
+```bash
+# Install PyInstaller
+pip install pyinstaller
+
+# Build the executable
+pyinstaller --onefile --windowed --name "HyperFTP" HyperFTP.py
+
+# Find the executable in dist/ folder
 ```
 
 ## 📖 Usage
@@ -73,8 +95,10 @@ python HyperFTP.py
 
 ```
 HyperFTP-v1.0/
-├── HyperFTP.py          # Main application
+├── HyperFTP.py          # Main application source
 ├── README.md            # Documentation
+├── dist/
+│   └── HyperFTP.exe     # Windows executable
 └── hyperftp_config.json # Saved connections (auto-generated)
 ```
 
