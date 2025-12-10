@@ -606,22 +606,22 @@ class HyperFTP:
         
         self.log_text = scrolledtext.ScrolledText(log_frame, height=10, 
                                                   font=('Consolas', 10),
-                                                  bg='#313244',           # Surface0
-                                                  fg='#a6adc8',           # Subtext1
-                                                  insertbackground='#cba6f7',  # Mauve
-                                                  selectbackground='#cba6f7',  # Mauve
-                                                  selectforeground='#1e1e2e',  # Base
+                                                  bg='#1a1a1a',
+                                                  fg='#b0b0b0',
+                                                  insertbackground='#ffffff',
+                                                  selectbackground='#ffffff',
+                                                  selectforeground='#0a0a0a',
                                                   relief='flat',
                                                   padx=10,
                                                   pady=8,
                                                   state=tk.DISABLED)
         self.log_text.pack(fill=tk.X)
         
-        # Configure log tags with Catppuccin colors
-        self.log_text.tag_configure('info', foreground='#89b4fa')     # Blue
-        self.log_text.tag_configure('success', foreground='#a6e3a1')  # Green
-        self.log_text.tag_configure('error', foreground='#f38ba8')    # Red
-        self.log_text.tag_configure('warning', foreground='#fab387')  # Peach
+        # Log tags - all white for minimalist look
+        self.log_text.tag_configure('info', foreground='#ffffff')
+        self.log_text.tag_configure('success', foreground='#ffffff')
+        self.log_text.tag_configure('error', foreground='#ff6b6b')    # Only red for errors
+        self.log_text.tag_configure('warning', foreground='#ffd93d')  # Only yellow for warnings
 
     def create_status_bar(self):
         """Create status bar"""
